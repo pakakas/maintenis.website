@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLAI — Command Line Agent Interface | Maintenis Docs</title>
+    <meta name="description" content="CLAI (Command Line Agent Interface) — composable pipeline architecture untuk AI agents: transport → entity → filter → transport.">
+    <meta name="keywords" content="CLAI, Command Line Agent Interface, pipeline, transport, entity, filter, HITL, agent, Maintenis">
+    <link rel="stylesheet" href="../assets/style.css">
+    <link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="/" class="logo">
+                <img src="../assets/logo.svg" alt="Maintenis" width="32" height="32">
+                <span>Maintenis</span>
+            </a>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/docs">Docs</a>
+                <a href="/blog">Blog</a>
+                <a href="https://github.com/yus-ham/maintenis">GitHub</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>CLAI</h1>
+                <p class="subtitle">Command Line Agent Interface</p>
+                <p class="description">
+                    Pipeline architecture untuk agents yang perlu read/write/list/edit/del file atau data dari berbagai transport.
+                    <strong>Composable. Safe by default. HITL-aware.</strong>
+                </p>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2>Pipeline Architecture</h2>
+                <pre><code>Agent → CLAI → transport(input) → entity → [filter] → transport(output) → result</code></pre>
+                <div class="feature-grid" style="margin-top: 1.5rem;">
+                    <div class="feature">
+                        <h3>Composable</h3>
+                        <p>Setiap layer bisa di-swap. Ganti transport dari local ke SSH tanpa ubah entity atau filter.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Safe by Default</h3>
+                        <p>Entity <strong>selalu</strong> deploy ke filter safety. <code>env → temp</code>, <code>write → backup</code>. Tanpa flag tambahan.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>HITL Contract</h3>
+                        <p><code>--hitl</code> flag mengaktifkan Human-In-The-Loop contract. Level: AUTO, CONFIRM, EDITABLE, BLOCK.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>140 Tests</h3>
+                        <p>Core pipeline, transport adapters, filter adapters, dan CLAI operations — semua covered.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="quickstart">
+            <div class="container">
+                <h2>3 Layers</h2>
+                <div class="feature-grid" style="margin-top: 1.5rem;">
+                    <div class="feature">
+                        <h3>Transport</h3>
+                        <p>I/O layer — baca/tulis data dari berbagai sumber:</p>
+                        <p><code>local</code> · <code>ssh</code> · <code>http</code> · <code>github</code> · <code>gitlab</code> · <code>stdout</code> · <code>file</code> · <code>email</code></p>
+                    </div>
+                    <div class="feature">
+                        <h3>Entity</h3>
+                        <p>Data format layer — representasi data terstruktur:</p>
+                        <p><code>env</code> · <code>pm2</code> · <code>json</code></p>
+                    </div>
+                    <div class="feature">
+                        <h3>Filter</h3>
+                        <p>Transform layer — proses data sebelum output:</p>
+                        <p><code>--json</code> · <code>--grep</code> · <code>--redact</code> · <code>--temp</code> · <code>--backup</code> · <code>--hitl</code></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2>Pipeline Diagram</h2>
+                <pre><code>tr(input) → entity → [filter] → tr(output)</code></pre>
+                <p style="color: var(--muted); margin-top: 1rem; text-align: center;">
+                    Setiap stage adalah composable adapter. Filter bersifat opsional dan bisa di-stack.
+                </p>
+            </div>
+        </section>
+
+        <section class="quickstart">
+            <div class="container">
+                <h2>Safety Design</h2>
+                <div class="feature-grid" style="margin-top: 1.5rem;">
+                    <div class="feature">
+                        <h3>Transactional Backup</h3>
+                        <p><code>env → temp</code> — backup sebelum ubah environment variables. Disable dengan <code>--no-temp</code>.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>History Backup</h3>
+                        <p><code>write → backup</code> — backup sebelum tulis file. Disable dengan <code>--no-backup</code>.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>HITL Gates</h3>
+                        <p>Level kontrol manusia: <code>AUTO</code> (jalan terus), <code>CONFIRM</code> (minta izin), <code>EDITABLE</code> (edit dulu), <code>BLOCK</code> (tolak).</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Entity → Safety</h3>
+                        <p>Entity layer <strong>selalu</strong> deploy ke filter safety. Ini bukan opt-in — ini default behavior.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2>CLAI Operations</h2>
+                <pre><code>list   — daftar file/directory
+read   — baca isi file
+edit   — modifikasi file yang ada
+add    — buat file/directory baru
+del    — hapus file/directory</code></pre>
+                <p style="color: var(--muted); margin-top: 1rem; text-align: center;">
+                    Setiap operasi melewati pipeline penuh: transport → entity → filter → transport.
+                </p>
+            </div>
+        </section>
+
+        <section class="quickstart">
+            <div class="container">
+                <h2>Source Code</h2>
+                <pre><code># Coming soon to npm
+# Source: https://github.com/yus-ham/maintenis</code></pre>
+                <p style="color: var(--muted); margin-top: 1rem; text-align: center;">
+                    Lihat juga: <a href="https://github.com/yus-ham/maintenis" style="color: var(--accent);">GitHub</a> ·
+                    <a href="/docs" style="color: var(--accent);">Docs</a>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="links">
+                <a href="/docs">Docs</a>
+                <a href="/docs/markzero.html">MarkZero</a>
+                <a href="/docs/imzhao.html">iMZHAO</a>
+                <a href="/docs/adn.html">ADN</a>
+                <a href="https://github.com/yus-ham/maintenis">GitHub</a>
+                <a href="https://npmjs.com/~ucing">npm</a>
+            </div>
+            <p>&copy; 2026 Maintenis</p>
+        </div>
+    </footer>
+</body>
+</html>

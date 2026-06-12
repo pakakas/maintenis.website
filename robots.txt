@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://maintenis.tech/sitemap.xml

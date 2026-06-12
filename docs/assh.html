@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASSH — Agent Secure Shell | Maintenis</title>
+    <meta name="description" content="ASSH (Agent Secure Shell) = CLAI shell over SSH. Interactive, one-shot, dan script mode. ASSHD server dengan MZ envelope detection, sandbox, dan auth.">
+    <meta name="keywords" content="ASSH, ASSHD, Agent Secure Shell, CLAI, SSH, agent, shell, Maintenis">
+    <link rel="stylesheet" href="../assets/style.css">
+    <link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="/" class="logo">
+                <img src="../assets/logo.svg" alt="Maintenis" width="32" height="32">
+                <span>Maintenis</span>
+            </a>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/docs">Docs</a>
+                <a href="/blog">Blog</a>
+                <a href="https://github.com/yus-ham/maintenis">GitHub</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>ASSH</h1>
+                <p class="subtitle">Agent Secure Shell</p>
+                <p class="description">
+                    CLAI shell over SSH. Bukan protocol baru &mdash; CLAI pipeline + SSH transport + interactive shell.
+                    <strong>Tanpa prefix, langsung CLAI commands.</strong>
+                </p>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2 style="font-size:1.5rem;margin-bottom:1.5rem;text-align:center;">Arsitektur</h2>
+                <pre style="background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:1.2rem 1.5rem;font-size:0.9rem;overflow-x:auto;text-align:center;margin-bottom:2rem;">ASSH Client (CLAI shell) ──SSH──▶ ASSHD Server (target machine)
+     │                                    │
+     ├─ interactive mode                   ├─ Receive CLAI commands
+     ├─ one-shot mode                      ├─ Execute CLAI pipeline
+     └─ script mode                        ├─ MZ envelope detection
+                                           ├─ Sandbox mode
+                                           └─ Auth (keys/tokens/IP)</pre>
+                <div class="feature-grid">
+                    <div class="feature">
+                        <h3>ASSH Client</h3>
+                        <p>CLAI shell &mdash; interactive shell dengan CLAI commands, tanpa prefix. Mengirim perintah ke remote server via SSH.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>ASSHD Server</h3>
+                        <p>Daemon di target server yang menerima CLAI commands, mengeksekusi pipeline, dan mengembalikan structured result (MZ+ADN).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2 style="font-size:1.5rem;margin-bottom:1.5rem;text-align:center;">3 Mode Operasi</h2>
+                <div class="feature-grid" style="grid-template-columns:repeat(3,1fr);">
+                    <div class="feature">
+                        <h3>Interactive</h3>
+                        <p>Shell interaktif &mdash; ketik CLAI commands langsung, dapat output real-time. Cocok untuk eksplorasi dan debugging.</p>
+                        <pre style="background:var(--code-bg);border:1px solid var(--border);border-radius:6px;padding:0.8rem;font-size:0.8rem;margin-top:0.8rem;overflow-x:auto;"><code>$ assh user@server
+ASSH&gt; ls /var/log
+ASSH&gt; cat app.log --grep error
+ASSH&gt; exit</code></pre>
+                    </div>
+                    <div class="feature">
+                        <h3>One-Shot</h3>
+                        <p>Jalankan satu CLAI command dan langsung dapat result. Output MZ+ADN passthrough &mdash; agent-readable.</p>
+                        <pre style="background:var(--code-bg);border:1px solid var(--border);border-radius:6px;padding:0.8rem;font-size:0.8rem;margin-top:0.8rem;overflow-x:auto;"><code>$ assh user@server \
+    "ls /var/log --json"</code></pre>
+                    </div>
+                    <div class="feature">
+                        <h3>Script</h3>
+                        <p>Jalankan file script berisi multiple CLAI commands. Cocok untuk automation dan batch operations.</p>
+                        <pre style="background:var(--code-bg);border:1px solid var(--border);border-radius:6px;padding:0.8rem;font-size:0.8rem;margin-top:0.8rem;overflow-x:auto;"><code>$ assh user@server \
+    --script deploy.assh</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2 style="font-size:1.5rem;margin-bottom:1.5rem;text-align:center;">ASSHD Server Features</h2>
+                <div class="feature-grid">
+                    <div class="feature">
+                        <h3>MZ Envelope Detection</h3>
+                        <p>Deteksi MarkZero envelope (<code>М</code>/<code>О</code>) untuk multiline payload. Structured output dalam format MZ+ADN.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Sandbox Mode</h3>
+                        <p>Keamanan berlapis: allowed paths, blocked commands, dan timeout. Mencegah eksekusi berbahaya di server target.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Authentication</h3>
+                        <p>Multi-layer auth: SSH keys, tokens, dan IP whitelist. Kontrol akses siapa yang bisa mengirim CLAI commands.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Structured Output</h3>
+                        <p>Interactive mode &rarr; MZ+ADN &rarr; ASCII table (human-readable). One-shot &rarr; MZ+ADN passthrough (agent-readable).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="quickstart">
+            <div class="container">
+                <h2>Flow Diagram</h2>
+                <pre style="text-align:left;display:block;"><code>User/Agent
+  │
+  ▼
+ASSH Client (CLAI shell)
+  │  ── CLAI command ──
+  ▼
+SSH Transport (encrypted)
+  │
+  ▼
+ASSHD Server (remote)
+  ├─ Auth check (SSH key / token / IP)
+  ├─ Sandbox validation (paths, commands, timeout)
+  ├─ MZ envelope detection (multiline payload)
+  ├─ Execute CLAI pipeline
+  │    transport(input) → entity → [filter] → transport(output)
+  │
+  └─ Return structured result
+       ├─ Interactive → MZ+ADN → ASCII table
+       └─ One-shot   → MZ+ADN passthrough</code></pre>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2 style="font-size:1.5rem;margin-bottom:1.5rem;text-align:center;">CLAI Pipeline di ASSH</h2>
+                <p style="color:var(--muted);text-align:center;margin-bottom:1.5rem;">
+                    ASSH bukan protocol baru &mdash; ini CLAI pipeline yang berjalan di atas SSH transport.
+                </p>
+                <pre style="background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:1.2rem 1.5rem;font-size:0.9rem;overflow-x:auto;text-align:center;">Agent → CLAI → transport(ssh) → entity → [filter] → transport(ssh) → result</pre>
+                <div class="feature-grid" style="margin-top:1.5rem;">
+                    <div class="feature">
+                        <h3>Transport Layer</h3>
+                        <p>I/O via SSH, local, HTTP, stdout, file. ASSH menambahkan SSH transport ke CLAI pipeline.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Entity Layer</h3>
+                        <p>Data format: env, pm2, json. Entity selalu bergantung ke filter safety.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Filter Layer</h3>
+                        <p>Transform: <code>--json</code>, <code>--grep</code>, <code>--redact</code>, <code>--temp</code>, <code>--backup</code>, <code>--hitl</code>.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Safety Contract</h3>
+                        <p><code>env → temp</code> (transactional backup). <code>write → backup</code> (history backup). HITL gate via <code>--hitl</code>.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="quickstart">
+            <div class="container">
+                <h2>Quick Start</h2>
+                <pre><code># Install ASSH
+maintenis add assh
+
+# Interactive mode
+assh user@server
+
+# One-shot command
+assh user@server "ls /var/log --json"
+
+# Script mode
+assh user@server --script deploy.assh</code></pre>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="links">
+                <a href="/docs">Docs Home</a>
+                <a href="/docs/clai.html">CLAI</a>
+                <a href="/docs/markzero.html">MarkZero</a>
+                <a href="/docs/imzhao.html">iMZHAO</a>
+                <a href="https://github.com/yus-ham/maintenis">GitHub</a>
+            </div>
+            <p>&copy; 2026 Maintenis</p>
+        </div>
+    </footer>
+</body>
+</html>

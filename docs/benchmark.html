@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benchmark — Maintenis Docs</title>
+    <meta name="description" content="Benchmark results: MarkZero vs JSON vs Markdown vs TOON. Token efficiency tested on 9 LLM models with live API.">
+    <meta name="keywords" content="benchmark, token efficiency, MarkZero, JSON, Markdown, TOON, ADN, LLM, AI agents">
+    <link rel="stylesheet" href="../assets/style.css">
+    <link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+    <style>
+        .doc-section { padding: 3rem 0; }
+        .doc-section h2 { font-size: 1.8rem; margin-bottom: 1rem; color: var(--fg); }
+        .doc-section h3 { font-size: 1.2rem; margin: 2rem 0 0.8rem; color: var(--accent); }
+        .doc-section p { color: var(--muted); margin-bottom: 1rem; font-size: 1rem; }
+        .doc-section strong { color: var(--fg); }
+        table { width: 100%; border-collapse: collapse; margin: 1.2rem 0 2rem; font-size: 0.9rem; }
+        th, td { padding: 0.65rem 1rem; text-align: left; border: 1px solid var(--border); }
+        th { background: var(--card-bg); color: var(--fg); font-weight: 600; }
+        td { color: var(--muted); }
+        tr:hover td { color: var(--fg); }
+        .highlight { color: var(--accent); font-weight: 700; }
+        .bad { color: #f87171; font-weight: 600; }
+        .good { color: #4ade80; font-weight: 600; }
+        .callout { background: var(--card-bg); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 6px; padding: 1.2rem 1.5rem; margin: 1.5rem 0; }
+        .callout p { margin: 0; }
+        .callout strong { color: var(--accent); }
+        code { background: var(--code-bg); padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.85rem; }
+        .breadcrumb { padding: 1rem 0; font-size: 0.85rem; color: var(--muted); }
+        .breadcrumb a { color: var(--muted); text-decoration: none; }
+        .breadcrumb a:hover { color: var(--fg); }
+        @media (max-width: 640px) {
+            table { font-size: 0.8rem; }
+            th, td { padding: 0.45rem 0.6rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="/" class="logo">
+                <img src="../assets/logo.svg" alt="Maintenis" width="32" height="32">
+                <span>Maintenis</span>
+            </a>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/docs">Docs</a>
+                <a href="/blog">Blog</a>
+                <a href="https://github.com/yus-ham/maintenis">GitHub</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="/">Home</a> / <a href="/docs">Docs</a> / Benchmark
+            </div>
+
+            <section class="doc-section">
+                <h2>Benchmark Results</h2>
+                <p>
+                    Semua benchmark dijalankan dengan <strong>live API</strong> di <strong>9 model</strong> berbeda.
+                    Data berikut membandingkan efisiensi token antara MarkZero (MZ), JSON, Markdown, dan TOON
+                    dalam dua kategori: <em>static analysis</em> dan <em>LLM reasoning</em>.
+                </p>
+
+                <!-- 9 Models Tested -->
+                <h3>Models yang Diuji</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Model</th>
+                            <th>Provider</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>MiMo</td><td>Xiaomi</td></tr>
+                        <tr><td>2</td><td>DeepSeek</td><td>DeepSeek</td></tr>
+                        <tr><td>3</td><td>Grok</td><td>xAI</td></tr>
+                        <tr><td>4</td><td>GLM-5.1</td><td>Zhipu</td></tr>
+                        <tr><td>5</td><td>Qwen3.6</td><td>Alibaba</td></tr>
+                        <tr><td>6</td><td>Hy3</td><td>ByteDance</td></tr>
+                        <tr><td>7</td><td>Kimi-K2.6</td><td>Moonshot</td></tr>
+                        <tr><td>8</td><td>Nex-N2</td><td>Inflection</td></tr>
+                        <tr><td>9</td><td>TOON</td><td>Community</td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Static Analysis -->
+                <h3>Token Efficiency — Static Analysis</h3>
+                <p>
+                    Perbandingan jumlah token yang dibutuhkan untuk merepresentasikan data yang sama
+                    dalam berbagai format. Semakin rendah semakin baik.
+                </p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Winner</th>
+                            <th>MarkZero</th>
+                            <th>JSON</th>
+                            <th>Markdown</th>
+                            <th>Gain</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Java OOM (flat, repeated)</td>
+                            <td><span class="highlight">MZ</span></td>
+                            <td>137T</td>
+                            <td>192T</td>
+                            <td>154T</td>
+                            <td><span class="good">+28.6%</span></td>
+                        </tr>
+                        <tr>
+                            <td>Zig stack trace</td>
+                            <td>TOON</td>
+                            <td>47T</td>
+                            <td>51T</td>
+                            <td>52T</td>
+                            <td>+9.6%</td>
+                        </tr>
+                        <tr>
+                            <td>PHP stack trace</td>
+                            <td>JSON DoD</td>
+                            <td>54T</td>
+                            <td>61T</td>
+                            <td>61T</td>
+                            <td>+11.5%</td>
+                        </tr>
+                        <tr>
+                            <td>Rust stack trace</td>
+                            <td>JSON DoD</td>
+                            <td>64T</td>
+                            <td>71T</td>
+                            <td>70T</td>
+                            <td>+9.9%</td>
+                        </tr>
+                        <tr>
+                            <td>JS Nested (deep)</td>
+                            <td>Markdown</td>
+                            <td><span class="bad">181T</span></td>
+                            <td>157T</td>
+                            <td>32T</td>
+                            <td><span class="bad">WORST</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="callout">
+                    <p>
+                        <strong>Pattern:</strong> MZ menang di flat/repeated data berkat <em>value interning</em>,
+                        tapi kalah di nested structures. Flat data = keunggulan MZ. Nested = kelemahan MZ.
+                    </p>
+                </div>
+
+                <!-- LLM Reasoning -->
+                <h3>LLM Reasoning Benchmark (MiMo — AST Node Repair)</h3>
+                <p>
+                    Pengujian kemampuan LLM memahami data dalam berbagai format.
+                    Task: AST node repair. Model: MiMo.
+                </p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Format</th>
+                            <th>Total Tokens</th>
+                            <th>Latency</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>JSON compact</td>
+                            <td>928</td>
+                            <td>23.6s</td>
+                            <td>Baseline</td>
+                        </tr>
+                        <tr>
+                            <td>MZ Header English (payload)</td>
+                            <td><span class="highlight">687</span></td>
+                            <td><span class="highlight">11.1s</span></td>
+                            <td><span class="good">TERBAIK</span></td>
+                        </tr>
+                        <tr>
+                            <td>TOON</td>
+                            <td>805</td>
+                            <td>16.3s</td>
+                            <td>Competitor</td>
+                        </tr>
+                        <tr>
+                            <td>MZ Header (system prompt)</td>
+                            <td><span class="bad">3,733</span></td>
+                            <td><span class="bad">108s</span></td>
+                            <td><span class="bad">TERBURUK</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="callout">
+                    <p>
+                        <strong>CRITICAL:</strong> Penempatan header = kritis. MZ yang sama:
+                        di system prompt menghasilkan <strong>3,733 tokens</strong> (terburuk),
+                        di payload + English header hanya <strong>687 tokens</strong> (terbaik).
+                        Perbedaan = <strong>5.4x</strong>.
+                    </p>
+                </div>
+
+                <!-- Escaper Bug Discovery -->
+                <h3>Temuan: Escaping Escaper Bug</h3>
+                <p>
+                    Awalnya nested JS membutuhkan <strong>421 tokens</strong> (terburuk dari semua format).
+                    Setelah bug encoder diperbaiki — dari <em>inline referencing</em> ke <em>grid referencing</em>:
+                </p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Kondisi</th>
+                            <th>Tokens</th>
+                            <th>vs TOON (154T)</th>
+                            <th>vs JSON DoD (157T)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Sebelum fix (inline ref)</td>
+                            <td><span class="bad">421T</span></td>
+                            <td><span class="bad">-173% lebih buruk</span></td>
+                            <td><span class="bad">-168% lebih buruk</span></td>
+                        </tr>
+                        <tr>
+                            <td>Sesudah fix (grid ref)</td>
+                            <td><span class="good">120T</span></td>
+                            <td><span class="good">Mengalahkan TOON</span></td>
+                            <td><span class="good">Mengalahkan JSON</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="callout">
+                    <p>
+                        <strong>Pelajaran:</strong> "Jangan pernah meng-escape percabangan data,
+                        cukup referensikan jalurnya."
+                    </p>
+                </div>
+
+                <!-- Key Findings Summary -->
+                <h3>Ringkasan Temuan Utama</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Temuan</th>
+                            <th>Detail</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td><strong>Flat data menang</strong></td>
+                            <td>MZ menghemat hingga <span class="good">+28.6%</span> pada flat/repeated data berkat value interning</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><strong>Nested data kalah</strong></td>
+                            <td>MZ lebih boros pada nested structures (181T vs Markdown 32T)</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><strong>Header placement = kritis</strong></td>
+                            <td>Perbedaan 5.4x antara header di system prompt vs di payload</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><strong>Escaper bug ditemukan</strong></td>
+                            <td>Grid referencing mengalahkan inline referencing: 421T → 120T</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td><strong>Bukan silver bullet</strong></td>
+                            <td>MZ punya niche (flat data + agent IR), bukan universal winner</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Formats Compared -->
+                <h3>Format yang Dibandingkan</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Format</th>
+                            <th>Tipe</th>
+                            <th>Keunggulan</th>
+                            <th>Kelemahan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>MarkZero (MZ)</strong></td>
+                            <td>Agent IR</td>
+                            <td>1-token markers, flat data efficient, grid referencing</td>
+                            <td>Nested structures boros</td>
+                        </tr>
+                        <tr>
+                            <td><strong>JSON</strong></td>
+                            <td>Human IR</td>
+                            <td>Universal, nested support bagus</td>
+                            <td>Verbose, banyak delimiter</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Markdown</strong></td>
+                            <td>Human IR</td>
+                            <td>Sangat compact untuk nested/hierarchical data</td>
+                            <td>Tidak terstruktur, ambigu</td>
+                        </tr>
+                        <tr>
+                            <td><strong>TOON</strong></td>
+                            <td>Human IR</td>
+                            <td>Indentation-based, ~30% lebih kecil dari JSON</td>
+                            <td>Tidak ada Agent IR layer</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="links">
+                <a href="/docs">Docs</a>
+                <a href="/docs/benchmark">Benchmark</a>
+                <a href="/docs/landscape">Landscape</a>
+                <a href="https://github.com/yus-ham/maintenis">GitHub</a>
+                <a href="https://npmjs.com/~ucing">npm</a>
+            </div>
+            <p>&copy; 2026 Maintenis</p>
+        </div>
+    </footer>
+</body>
+</html>

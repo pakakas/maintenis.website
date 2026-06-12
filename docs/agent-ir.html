@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent IR — Maintenis Docs</title>
+    <meta name="description" content="Agent IR (ADN/MarkZero) — data format yang dirancang dari awal untuk AI agents. Bukan Human IR. Bukan JSON. Bukan XML.">
+    <meta name="keywords" content="Agent IR, ADN, MarkZero, AI agents, data format, token efficient, Human IR">
+    <link rel="stylesheet" href="../assets/style.css">
+    <link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+    <style>
+        .doc-content { padding: 3rem 0 4rem; }
+        .doc-content h1 { font-size: 2.4rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+        .doc-content .lead { color: var(--accent); font-size: 1.15rem; margin-bottom: 2.5rem; }
+        .doc-content h2 { font-size: 1.4rem; font-weight: 700; margin: 2.5rem 0 0.8rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+        .doc-content h2:first-of-type { border-top: none; padding-top: 0; }
+        .doc-content h3 { font-size: 1.1rem; font-weight: 600; margin: 1.8rem 0 0.6rem; color: var(--accent); }
+        .doc-content p { color: var(--muted); margin-bottom: 1rem; font-size: 0.95rem; }
+        .doc-content ul, .doc-content ol { color: var(--muted); margin: 0.5rem 0 1.2rem 1.5rem; font-size: 0.95rem; }
+        .doc-content li { margin-bottom: 0.4rem; }
+        .doc-content strong { color: var(--fg); }
+        .doc-content code { background: var(--code-bg); padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.85rem; }
+        .doc-content pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem 1.5rem; overflow-x: auto; margin: 1rem 0 1.5rem; font-size: 0.9rem; line-height: 1.5; }
+        .doc-content pre code { background: none; padding: 0; }
+        .doc-content table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; font-size: 0.9rem; }
+        .doc-content th, .doc-content td { text-align: left; padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--border); }
+        .doc-content th { color: var(--fg); font-weight: 600; }
+        .doc-content td { color: var(--muted); }
+        .doc-content blockquote { border-left: 3px solid var(--accent); padding: 0.8rem 1.2rem; margin: 1.2rem 0; background: var(--card-bg); border-radius: 0 8px 8px 0; }
+        .doc-content blockquote p { color: var(--fg); margin-bottom: 0; font-style: italic; }
+        .callout { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem 1.5rem; margin: 1.2rem 0; }
+        .callout p { margin-bottom: 0; }
+        footer .links a.active { color: var(--accent); }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="/" class="logo">
+                <img src="../assets/logo.svg" alt="Maintenis" width="32" height="32">
+                <span>Maintenis</span>
+            </a>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/docs" class="active">Docs</a>
+                <a href="/blog">Blog</a>
+                <a href="https://github.com/yus-ham/maintenis">GitHub</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="doc-content">
+        <div class="container">
+            <h1>Agent IR</h1>
+            <p class="lead">Intermediate Representation yang dioptimalkan untuk AI agents — bukan untuk mata manusia.</p>
+
+            <h2>Apa itu Agent IR?</h2>
+            <p>
+                <strong>Agent IR</strong> (Agent Intermediate Representation) adalah konsep format data yang dirancang dari awal untuk dikonsumsi oleh AI agents, bukan oleh manusia. Di ekosistem Maintenis, Agent IR diimplementasikan lewat dua komponen:
+            </p>
+            <ul>
+                <li><strong>ADN</strong> (Agent Data Notation) — spesifikasi encoding rendah-level dengan marker-marker berbasis simbol</li>
+                <li><strong>MarkZero</strong> — implementasi praktis ADN dalam format yang bisa dipakai langsung oleh LLM</li>
+            </ul>
+            <blockquote>
+                <p>"Markup is for Screens. Markdown is for Docs. MarkZero is for Intelligence."</p>
+            </blockquote>
+
+            <h2>Agent IR vs Human IR</h2>
+            <p>
+                Sebagian besar format data yang ada saat ini — JSON, XML, YAML, Markdown, bahkan format-format baru seperti TOON, ONTO, JTON, dan TERSE — masih merupakan <strong>Human IR</strong>. Mereka menggunakan visual delimiters (kurung, titik dua, indentasi) yang dirancang agar manusia bisa membaca dan memahami struktur data secara visual.
+            </p>
+            <p>
+                Agent IR mengambil pendekatan berbeda: <strong>flat relational referencing</strong>. Alih-alih delimiter visual, data direpresentasikan dengan referensi dan marker yang dioptimalkan untuk tokenisasi LLM.
+            </p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Aspek</th>
+                        <th>Human IR (JSON, TOON, ONTO, dll)</th>
+                        <th>Agent IR (ADN/MarkZero)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Desain untuk</td>
+                        <td>Mata manusia</td>
+                        <td>LLM tokenizer</td>
+                    </tr>
+                    <tr>
+                        <td>Struktur</td>
+                        <td>Visual delimiters (kurung, indentasi)</td>
+                        <td>Flat relational references</td>
+                    </tr>
+                    <tr>
+                        <td>Marker</td>
+                        <td>Karakter multi-token</td>
+                        <td>Simbol 1-token (empiris)</td>
+                    </tr>
+                    <tr>
+                        <td>Redundansi</td>
+                        <td>Key berulang di setiap objek</td>
+                        <td>Column interning (schema-once)</td>
+                    </tr>
+                    <tr>
+                        <td>Keterbacaan manusia</td>
+                        <td>Tinggi</td>
+                        <td>Rendah (by design)</td>
+                    </tr>
+                    <tr>
+                        <td>Token efficiency</td>
+                        <td>Baseline</td>
+                        <td>26-71% lebih kecil dari JSON</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>ADN Markers</h2>
+            <p>
+                ADN menggunakan simbol-simbol yang <strong>diuji secara empiris</strong> di 9 model LLM berbeda untuk memastikan setiap marker bernilai tepat 1 token. Ini bukan tebakan — ini data dari live API testing.
+            </p>
+
+            <h3>Marker Utama (v1 Final)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Simbol</th>
+                        <th>Fungsi</th>
+                        <th>Token Cost</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>·</code></td><td>Value</td><td>+1</td></tr>
+                    <tr><td><code>░</code></td><td>Grid</td><td>+1</td></tr>
+                    <tr><td><code>§</code></td><td>Column</td><td>+1</td></tr>
+                    <tr><td><code>→</code></td><td>Row</td><td>+1</td></tr>
+                    <tr><td><code>¦</code></td><td>Row Separator</td><td>+1</td></tr>
+                    <tr><td><code>≡</code></td><td>Bind</td><td>+1</td></tr>
+                    <tr><td><code>¤</code></td><td>Value Reference</td><td>+1</td></tr>
+                    <tr><td><code>※</code></td><td>Grid Reference</td><td>+1</td></tr>
+                    <tr><td><code>◆</code></td><td>True</td><td>+1</td></tr>
+                    <tr><td><code>◇</code></td><td>False</td><td>+1</td></tr>
+                    <tr><td><code>○</code></td><td>Null</td><td>+1</td></tr>
+                    <tr><td><code>ɛ</code></td><td>Escaper</td><td>+1</td></tr>
+                    <tr><td><code>М</code></td><td>Envelope Start</td><td>+1</td></tr>
+                    <tr><td><code>О</code></td><td>Envelope Close</td><td>+1</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Evolusi Marker</h3>
+            <p>
+                Marker ADN tidak lahir langsung dalam bentuk final. Ada 4 fase evolusi:
+            </p>
+            <ol>
+                <li><strong>Fase 0 — Unicode Name = Function</strong>: Pakai karakter Unicode yang nama-nya = fungsi (misal <code>℣</code> = VERSICLE untuk value). Dibatalkan karena tokenizer pecah jadi 2-3 tokens.</li>
+                <li><strong>Fase 1 — Semantic Unicode (PAP)</strong>: Pilihan lebih murah, tapi masih "philosophically beautiful, suffered heavy token fragmentation."</li>
+                <li><strong>Fase 2 — Circled Letters</strong>: Lebih compact, diuji offline. Tapi offline testing bukan ground truth.</li>
+                <li><strong>Fase 3 — MarkZero v1 Final</strong>: Simbol universal, diuji dengan <strong>live model API di 9 models</strong>. Ground truth.</li>
+            </ol>
+            <p>
+                Setiap fase mengorbankan "keindahan" demi "efisiensi" — dari filosofis ke empiris.
+            </p>
+
+            <h2>Token Efficiency</h2>
+            <p>
+                Benchmark dilakukan dengan dua metode: static analysis dan live LLM reasoning.
+            </p>
+
+            <h3>Static Analysis (Token Count)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Skenario</th>
+                        <th>MarkZero</th>
+                        <th>JSON</th>
+                        <th>Markdown</th>
+                        <th>Gain</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Java OOM (flat, repeated)</td>
+                        <td>137T</td>
+                        <td>192T</td>
+                        <td>154T</td>
+                        <td><strong>+28.6%</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Zig stack trace</td>
+                        <td>47T</td>
+                        <td>51T</td>
+                        <td>52T</td>
+                        <td>+9.6%</td>
+                    </tr>
+                    <tr>
+                        <td>PHP stack trace</td>
+                        <td>54T</td>
+                        <td>61T</td>
+                        <td>61T</td>
+                        <td>+11.5%</td>
+                    </tr>
+                    <tr>
+                        <td>Rust stack trace</td>
+                        <td>64T</td>
+                        <td>71T</td>
+                        <td>70T</td>
+                        <td>+9.9%</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>
+                <strong>Pattern</strong>: MarkZero menang di flat/repeated data berkat value interning. Di nested structures yang sangat dalam, format lain mungkin lebih optimal.
+            </p>
+
+            <h3>LLM Reasoning Benchmark (MiMo — AST Node Repair)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Format</th>
+                        <th>Total Tokens</th>
+                        <th>Latency</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>JSON compact</td>
+                        <td>928</td>
+                        <td>23.6s</td>
+                        <td>Baseline</td>
+                    </tr>
+                    <tr>
+                        <td>MZ Header English (payload)</td>
+                        <td><strong>687</strong></td>
+                        <td><strong>11.1s</strong></td>
+                        <td>Terbaik</td>
+                    </tr>
+                    <tr>
+                        <td>TOON</td>
+                        <td>805</td>
+                        <td>16.3s</td>
+                        <td>Competitor</td>
+                    </tr>
+                    <tr>
+                        <td>MZ Header (system prompt)</td>
+                        <td>3,733</td>
+                        <td>108s</td>
+                        <td>Terburuk</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="callout">
+                <p>
+                    <strong>Critical finding</strong>: Penempatan header MarkZero sangat kritis. Format yang sama menghasilkan perbedaan <strong>5.4x</strong> — di payload = 687 tokens (terbaik), di system prompt = 3,733 tokens (terburuk).
+                </p>
+            </div>
+
+            <h2>Arsitektur di Ekosistem Maintenis</h2>
+            <p>
+                Agent IR (MarkZero/ADN) adalah <strong>DNA</strong> dari keseluruhan ekosistem Maintenis. Semua komponen berkomunikasi lewat format ini:
+            </p>
+            <pre><code>MainTenis  (The Actor)    — Bootstrapper, yang ngejalanin semuanya
+MarkZero   (The DNA)      — Agent IR, representasi data murni
+iMZHAO     (The Muscle)   — Operasional, eksekusi aksi agen
+SLOP       (The Eyes)     — App-level perception, state observation
+CLAI       (The Hands)    — Command Line Agent Interface, pipeline</code></pre>
+            <p>
+                Shell tool output di-encode otomatis ke MarkZero format. CLAI pipeline memproses data lewat transport → entity → filter → transport. Semua berbicara dalam satu bahasa: Agent IR.
+            </p>
+
+            <h2>Mengapa Ini Penting?</h2>
+            <p>
+                Di tahun 2026, format-format token-efficient bermunculan (TOON, ONTO, JTON, TERSE). Semuanya mengurangi token dibanding JSON. Tapi semuanya masih <strong>Human IR</strong> — pakai delimiter visual yang dirancang untuk keterbacaan manusia.
+            </p>
+            <p>
+                Agent IR mengajukan pertanyaan fundamental: <em>kalau yang membaca data adalah AI, kenapa kita masih pakai format yang dirancang untuk mata manusia?</em>
+            </p>
+            <blockquote>
+                <p>"Agent IR: Data format yang dioptimalkan untuk AI, bukan untuk mata manusia. 26-71% lebih efisien dari JSON."</p>
+            </blockquote>
+            <p>
+                Dengan MarkZero, LLM tidak perlu mem-parsing delimiter visual. Data langsung terstruktur dalam representasi yang bisa langsung diproses — mengurangi token, mengurangi latency, mengurangi ambiguitas.
+            </p>
+
+            <h2>Selanjutnya</h2>
+            <ul>
+                <li><strong>Spesifikasi lengkap</strong> — lihat repository <a href="https://github.com/pakakas/markzero" style="color: var(--accent);">@pakakas/markzero</a></li>
+                <li><strong>iMZHAO Protocol</strong> — protokol operasional yang memakai MarkZero sebagai format data</li>
+                <li><strong>CLAI Pipeline</strong> — arsitektur pipeline yang memproses data dalam format Agent IR</li>
+            </ul>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="links">
+                <a href="/docs/agent-ir" class="active">Agent IR</a>
+                <a href="/docs/markzero">MarkZero</a>
+                <a href="/docs/imzhao">iMZHAO</a>
+                <a href="/docs/clai">CLAI</a>
+                <a href="https://github.com/yus-ham/maintenis">GitHub</a>
+                <a href="https://npmjs.com/~ucing">npm</a>
+            </div>
+            <p>&copy; 2026 Maintenis</p>
+        </div>
+    </footer>
+</body>
+</html>

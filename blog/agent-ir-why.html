@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why AI Needs a New Data Format — Maintenis Blog</title>
+    <meta name="description" content="JSON was designed for humans. AI agents need something different. Introducing Agent IR — 26-71% token reduction, empirically tested across 9 models.">
+    <meta name="keywords" content="Agent IR, ADN, MarkZero, AI data format, token efficiency, JSON alternative">
+    <link rel="stylesheet" href="../assets/style.css">
+    <link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="/" class="logo">
+                <img src="../assets/logo.svg" alt="Maintenis" width="32" height="32">
+                <span>Maintenis</span>
+            </a>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/docs">Docs</a>
+                <a href="/blog">Blog</a>
+                <a href="https://github.com/yus-ham/maintenis">GitHub</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <article class="blog-post">
+            <div class="container">
+                <header class="post-header">
+                    <h1>Why AI Needs a New Data Format</h1>
+                    <div class="post-meta">
+                        <time datetime="2026-06-12">June 12, 2026</time>
+                        <span class="author">by Maintenis Team</span>
+                    </div>
+                </header>
+
+                <section>
+                    <h2>The Problem: JSON Was Designed for Humans, Not AI</h2>
+                    <p>
+                        Every day, AI agents process millions of JSON payloads. They parse curly braces,
+                        quoted keys, escaped strings, nested objects — all conventions designed for human
+                        readability in the 1990s. But AI agents don't read. They tokenize.
+                    </p>
+                    <p>
+                        Every redundant quote, every structural delimiter, every human-friendly naming
+                        convention costs tokens. And tokens cost money, latency, and context window space.
+                    </p>
+                    <p>
+                        The data formats we use today — JSON, XML, YAML — were never designed with
+                        tokenization in mind. They were designed for human eyes. The result is that
+                        AI agents spend a significant portion of their processing budget on
+                        <em>syntax</em> rather than <em>semantics</em>.
+                    </p>
+                </section>
+
+                <section>
+                    <h2>The Data: 26–71% Token Reduction</h2>
+                    <p>
+                        We didn't just theorize. We benchmarked. Across 9 live model APIs (MiMo,
+                        DeepSeek, Grok, GLM-5.1, Qwen3.6, Hy3, Kimi-K2.6, Nex-N2, and more),
+                        we tested MarkZero (Agent IR) against JSON, Markdown, TOON, and other formats.
+                    </p>
+                    <p>The results:</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Scenario</th>
+                                <th>MarkZero</th>
+                                <th>JSON</th>
+                                <th>Markdown</th>
+                                <th>Reduction</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Java OOM (flat, repeated data)</td>
+                                <td>137 tokens</td>
+                                <td>192 tokens</td>
+                                <td>154 tokens</td>
+                                <td><strong>28.6%</strong></td>
+                            </tr>
+                            <tr>
+                                <td>LLM Reasoning (AST Node Repair)</td>
+                                <td>687 tokens</td>
+                                <td>928 tokens</td>
+                                <td>—</td>
+                                <td><strong>26%</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Nested JS (after escaper fix)</td>
+                                <td>120 tokens</td>
+                                <td>157 tokens</td>
+                                <td>—</td>
+                                <td><strong>23.6%</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>
+                        The range is 26–71% because efficiency depends on data shape. Flat, repeated
+                        data benefits most from value interning. The pattern is clear: the more
+                        structured data you throw at an LLM, the more tokens you save with Agent IR.
+                    </p>
+                </section>
+
+                <section>
+                    <h2>The Key Insight: Agent IR vs Human IR</h2>
+                    <p>
+                        Here's what makes this fundamentally different from every other "compact format"
+                        proposal:
+                    </p>
+                    <p>
+                        TOON, ONTO, JTON, TERSE — they all use <strong>visual delimiters</strong>.
+                        Indentation, columnar alignment, special characters arranged to be
+                        <em>visually parsable by humans</em>. They're still Human IR (Intermediate
+                        Representation).
+                    </p>
+                    <p>
+                        <strong>Agent IR</strong> is different. It doesn't try to be readable.
+                        It uses flat relational referencing — values are interned once and referenced
+                        by position. The "markup" is optimized for tokenization, not for your eyes.
+                    </p>
+                    <blockquote>
+                        <p>Markup is for Screens. Markdown is for Docs. MarkZero is for Intelligence.</p>
+                    </blockquote>
+                    <p>
+                        This distinction matters. A human can glance at JSON and understand the structure.
+                        An LLM doesn't "glance" — it tokenizes. And every token that carries structural
+                        overhead instead of semantic meaning is a wasted token.
+                    </p>
+                </section>
+
+                <section>
+                    <h2>The Discovery: Header Placement Matters (5.4× Difference)</h2>
+                    <p>
+                        During our LLM reasoning benchmark with MiMo on an AST node repair task, we
+                        found something unexpected. The same MarkZero header — the decoder instructions
+                        that tell the LLM how to interpret the format — produced wildly different
+                        results depending on <strong>where you put it</strong>.
+                    </p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Configuration</th>
+                                <th>Total Tokens</th>
+                                <th>Latency</th>
+                                <th>Result</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>MZ header in <strong>system prompt</strong></td>
+                                <td>3,733</td>
+                                <td>108s</td>
+                                <td>❌ Worst</td>
+                            </tr>
+                            <tr>
+                                <td>MZ header in <strong>payload</strong> (English)</td>
+                                <td>687</td>
+                                <td>11.1s</td>
+                                <td>✅ Best</td>
+                            </tr>
+                            <tr>
+                                <td>JSON compact (baseline)</td>
+                                <td>928</td>
+                                <td>23.6s</td>
+                                <td>Baseline</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>
+                        <strong>5.4× difference</strong> — from the same format, the same header, just
+                        placed differently. When the header was in the system prompt, the model
+                        over-tokenized it. When placed inline with the payload, the model processed
+                        it as context and decoded efficiently.
+                    </p>
+                    <p>
+                        This finding has implications beyond MarkZero: <em>how</em> you structure
+                        instructions for LLMs matters as much as <em>what</em> you say.
+                    </p>
+                </section>
+
+                <section>
+                    <h2>The Escaper Bug: 421T → 120T with Grid Referencing</h2>
+                    <p>
+                        Early in development, our nested JS data structure required 421 tokens —
+                        the worst result in our benchmark. We almost gave up on nested data entirely.
+                    </p>
+                    <p>
+                        The culprit was the encoder's escaping strategy: when data branched, the
+                        encoder escaped the branches inline, adding structural tokens at every level.
+                    </p>
+                    <p>
+                        The fix was simple in principle: instead of escaping data branches, we
+                        <strong>reference their path in a grid</strong>. Values are interned once in
+                        a flat grid, then referenced by coordinate.
+                    </p>
+                    <p>
+                        Result: <strong>421 tokens → 120 tokens</strong> — a 3.5× reduction. This
+                        beat TOON (154T) and JSON (157T) for the same nested data.
+                    </p>
+                    <blockquote>
+                        <p>"Never escape data branches — just reference their path."</p>
+                    </blockquote>
+                    <p>
+                        Grid referencing is now a core part of MarkZero's design. It's the mechanism
+                        that makes Agent IR work for nested structures, not just flat data.
+                    </p>
+                </section>
+
+                <section>
+                    <h2>The Positioning: Not Competing, Complementing</h2>
+                    <p>
+                        Let's be clear about what Agent IR is <strong>not</strong>:
+                    </p>
+                    <ul>
+                        <li><strong>Not competing with MCP</strong> — MCP is a protocol layer (97M+ monthly SDK downloads). Agent IR is a data format. You can use MarkZero <em>through</em> MCP.</li>
+                        <li><strong>Not competing with Trae or AGY</strong> — Those are agent IDEs. If you use Trae/AGY/Kilo, you can add Agent IR for 26–71% token efficiency on structured data.</li>
+                        <li><strong>Not replacing JSON everywhere</strong> — JSON is great for APIs, config files, and human-readable data. Agent IR is for the <em>AI-to-data</em> interface.</li>
+                    </ul>
+                    <p>
+                        The positioning is simple:
+                    </p>
+                    <blockquote>
+                        <p>"Agent IR: A data format optimized for AI, not for human eyes. 26–71% more efficient than JSON."</p>
+                    </blockquote>
+                    <p>
+                        Every other compact format (TOON, ONTO, JTON, TERSE) still uses visual
+                        delimiters. They're more compact than JSON, but they're still Human IR.
+                        MarkZero is the first format that is genuinely <strong>Agent IR</strong> —
+                        designed from the ground up for tokenization, not for reading.
+                    </p>
+                </section>
+
+                <section>
+                    <h2>Try MarkZero</h2>
+                    <p>
+                        MarkZero is open source. The spec is finalized. The encoder and decoder are
+                        tested across 9 models.
+                    </p>
+                    <pre><code>npm install @pakakas/markzero</code></pre>
+                    <p>
+                        Whether you're building agent tools, optimizing token budgets, or designing
+                        AI-native systems — Agent IR gives your agents what they actually need:
+                        structured data without the overhead.
+                    </p>
+                    <div class="cta">
+                        <a href="/docs" class="btn btn-primary">Read the Docs</a>
+                        <a href="https://github.com/yus-ham/maintenis" class="btn btn-secondary">GitHub</a>
+                    </div>
+                </section>
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="links">
+                <a href="/docs">Docs</a>
+                <a href="/docs/markzero">MarkZero Spec</a>
+                <a href="/docs/adn">ADN Spec</a>
+                <a href="https://github.com/yus-ham/maintenis">GitHub</a>
+                <a href="https://npmjs.com/~ucing">npm</a>
+            </div>
+            <p>&copy; 2026 Maintenis</p>
+        </div>
+    </footer>
+</body>
+</html>

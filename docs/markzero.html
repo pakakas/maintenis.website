@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MarkZero Spec — Maintenis Docs</title>
+    <meta name="description" content="MarkZero v1 specification — token-efficient data format for AI agents. 1-token markers, empirically tested on 9 models.">
+    <meta name="keywords" content="MarkZero, spec, markers, encode, decode, ADN, Agent IR, token efficient">
+    <link rel="stylesheet" href="../assets/style.css">
+    <link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="/" class="logo">
+                <img src="../assets/logo.svg" alt="Maintenis" width="32" height="32">
+                <span>Maintenis</span>
+            </a>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/docs">Docs</a>
+                <a href="/blog">Blog</a>
+                <a href="https://github.com/yus-ham/maintenis">GitHub</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>MarkZero Spec</h1>
+                <p class="subtitle">Markup is for Screens. Markdown is for Docs. MarkZero is for Intelligence.</p>
+                <p class="description">
+                    MarkZero adalah format data yang dioptimalkan untuk AI agents.
+                    <strong>Bukan Human IR — Agent IR.</strong> Setiap marker = 1 token, empirically tested di 9 models.
+                </p>
+            </div>
+        </section>
+
+        <section class="quickstart">
+            <div class="container">
+                <h2>Ringkasan</h2>
+                <p>
+                    MarkZero (MZ) lahir dari kebutuhan agent untuk berkomunikasi dengan data secara efisien.
+                    Bukan sekadar kompresi — tapi representasi yang <em>native</em> dipahami oleh LLM.
+                    Semua marker telah divalidasi secara empiris melalui live API di 9 model berbeda.
+                </p>
+                <p>
+                    Total waktu evolusi dari PAP ke MarkZero v1: <strong>~2-3 minggu</strong> (Mei 2026).
+                </p>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2>Evolusi Marker</h2>
+                <p>Setiap fase mengorbankan "keindahan" demi "efisiensi", dari filosofis ke empiris.</p>
+
+                <div class="feature-grid">
+                    <div class="feature">
+                        <h3>Fase 0: Pre-PAP</h3>
+                        <p>Unicode name = function. Dibatalkan — tokenizer pecah jadi 2-3 tokens.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Fase 1: PAP v1</h3>
+                        <p>Semantic Unicode. Filosofis indah, tapi token fragmented.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Fase 2: Initial MarkZero</h3>
+                        <p>Circled letters. Offline testing terlihat bagus, bukan ground truth.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Fase 3: v1 Final</h3>
+                        <p>Universal symbols. Live API testing di 9 models. Ground truth.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="quickstart">
+            <div class="container">
+                <h2>MarkZero v1 Final Markers</h2>
+                <p>Semua marker berikut telah diuji secara empiris di live model API (MiMo, DeepSeek, Grok, GLM-5.1, Qwen3.6, Hy3, Kimi-K2.6, Nex-N2).</p>
+
+                <table style="width:100%; border-collapse:collapse; margin:1rem 0;">
+                    <thead>
+                        <tr style="border-bottom:2px solid #444;">
+                            <th style="text-align:left; padding:0.5rem;">Char</th>
+                            <th style="text-align:left; padding:0.5rem;">Role</th>
+                            <th style="text-align:left; padding:0.5rem;">Token Cost</th>
+                            <th style="text-align:left; padding:0.5rem;">Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom:1px solid #333;">
+                            <td style="padding:0.5rem;"><code>·</code></td>
+                            <td style="padding:0.5rem;">Value</td>
+                            <td style="padding:0.5rem;">+1</td>
+                            <td style="padding:0.5rem;">Prefix nilai/data</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid #333;">
+                            <td style="padding:0.5rem;"><code>§</code></td>
+                            <td style="padding:0.5rem;">Column</td>
+                            <td style="padding:0.5rem;">+1</td>
+                            <td style="padding:0.5rem;">Prefix kolom/grid</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid #333;">
+                            <td style="padding:0.5rem;"><code>→</code></td>
+                            <td style="padding:0.5rem;">Row</td>
+                            <td style="padding:0.5rem;">+1</td>
+                            <td style="padding:0.5rem;">Prefix baris data</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid #333;">
+                            <td style="padding:0.5rem;"><code>¦</code></td>
+                            <td style="padding:0.5rem;">Row Separator</td>
+                            <td style="padding:0.5rem;">+1</td>
+                            <td style="padding:0.5rem;">Pemisah antar baris</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid #333;">
+                            <td style="padding:0.5rem;"><code>≡</code></td>
+                            <td style="padding:0.5rem;">Bind</td>
+                            <td style="padding:0.5rem;">+1</td>
+                            <td style="padding:0.5rem;">Relasi/pengikat data</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid #333;">
+                            <td style="padding:0.5rem;"><code>¤</code></td>
+                            <td style="padding:0.5rem;">Value Ref</td>
+                            <td style="padding:0.5rem;">+1</td>
+                            <td style="padding:0.5rem;">Referensi ke nilai lain</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid #333;">
+                            <td style="padding:0.5rem;"><code>※</code></td>
+                            <td style="padding:0.5rem;">Grid Ref</td>
+                            <td style="padding:0.5rem;">+1</td>
+                            <td style="padding:0.5rem;">Referensi ke grid lain</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid #333;">
+                            <td style="padding:0.5rem;"><code>◆</code></td>
+                            <td style="padding:0.5rem;">True</td>
+                            <td style="padding:0.5rem;">+1</td>
+                            <td style="padding:0.5rem;">Nilai boolean true</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid #333;">
+                            <td style="padding:0.5rem;"><code>◇</code></td>
+                            <td style="padding:0.5rem;">False</td>
+                            <td style="padding:0.5rem;">+1</td>
+                            <td style="padding:0.5rem;">Nilai boolean false</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid #333;">
+                            <td style="padding:0.5rem;"><code>○</code></td>
+                            <td style="padding:0.5rem;">Null</td>
+                            <td style="padding:0.5rem;">+1</td>
+                            <td style="padding:0.5rem;">Nilai kosong/null</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid #333;">
+                            <td style="padding:0.5rem;"><code>ɛ</code></td>
+                            <td style="padding:0.5rem;">Escaper</td>
+                            <td style="padding:0.5rem;">+1</td>
+                            <td style="padding:0.5rem;">Escape character untuk special chars</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid #333;">
+                            <td style="padding:0.5rem;"><code>М</code></td>
+                            <td style="padding:0.5rem;">Envelope Start</td>
+                            <td style="padding:0.5rem;">+1</td>
+                            <td style="padding:0.5rem;">Pembuka envelope MZ</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:0.5rem;"><code>О</code></td>
+                            <td style="padding:0.5rem;">Envelope Close</td>
+                            <td style="padding:0.5rem;">+1</td>
+                            <td style="padding:0.5rem;">Penutup envelope MZ</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p><strong>Catatan:</strong> Grid marker <code>░</code> juga diuji dan lolos +1 token di semua model kecuali Hy3 (+2).</p>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2>Envelope Format: М/О</h2>
+                <p>
+                    Setiap payload MarkZero dibungkus dalam envelope <code>М</code> (start) dan <code>О</code> (close).
+                    Ini memungkinkan deteksi otomatis MZ payload — baik oleh agent maupun oleh infrastruktur seperti ASSHD.
+                </p>
+
+                <pre><code>М
+§col1 §col2 §col3
+→val1 ·val2 ·val3
+→val4 ·val5 ·val6
+О</code></pre>
+
+                <p>Envelope markers juga 1-token setiap model yang diuji.</p>
+
+                <h3 style="margin-top:1.5rem;">Inline Decoder Header</h3>
+                <p>
+                    Header decoder bisa ditempel langsung di payload (di dalam envelope) untuk self-describing format.
+                    Penempatan header di <strong>payload</strong> (bukan system prompt) terbukti 5.4x lebih efisien.
+                </p>
+
+                <pre><code>М
+# MZ v1 — columns: name,age,city
+→Alice ·30 ·Jakarta
+→Bob ·25 ·Bandung
+О</code></pre>
+            </div>
+        </section>
+
+        <section class="quickstart">
+            <div class="container">
+                <h2>Encode &amp; Decode</h2>
+                <p>
+                    MarkZero punya reference implementation di <code>@pakakas/markzero</code> dengan dukungan encode dan decode penuh.
+                </p>
+
+                <pre><code># Coming soon to npm
+# Source: https://github.com/yus-ham/maintenis</code></pre>
+
+                <h3 style="margin-top:1.5rem;">Contoh Penggunaan</h3>
+                <pre><code>import { encode, decode } from '@pakakas/markzero';
+
+// Encode data ke MarkZero format
+const mz = encode({
+  columns: ['name', 'age', 'city'],
+  rows: [
+    ['Alice', 30, 'Jakarta'],
+    ['Bob', 25, 'Bandung']
+  ]
+});
+
+// Decode MarkZero kembali ke data
+const data = decode(mz);</code></pre>
+
+                <h3 style="margin-top:1.5rem;">Fitur Encoder</h3>
+                <ul style="margin:1rem 0; padding-left:1.5rem; line-height:2;">
+                    <li><strong>Value interning</strong> — nilai berulang direferensikan, bukan diulang</li>
+                    <li><strong>Grid referencing</strong> — data nested direferensikan ke grid terpisah</li>
+                    <li><strong>Escaper (<code>ɛ</code>)</strong> — handle special characters tanpa ambigu</li>
+                    <li><strong>Envelope (<code>М/О</code>)</strong> — auto-detectable wrapper</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2>Token Efficiency</h2>
+                <div class="feature-grid">
+                    <div class="feature">
+                        <h3>Flat Data</h3>
+                        <p>Menang 28.6% vs JSON (Java OOM scenario, 137T vs 192T)</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Stack Traces</h3>
+                        <p>11-29% lebih kecil dari JSON (PHP, Rust, Zig)</p>
+                    </div>
+                    <div class="feature">
+                        <h3>LLM Reasoning</h3>
+                        <p>687 tokens vs 928 (JSON compact) — terbaik dalam benchmark MiMo</p>
+                    </div>
+                    <div class="feature">
+                        <h3>9 Models Tested</h3>
+                        <p>Semua 14 marker = 1 token di MiMo, DeepSeek, Grok, GLM, Qwen, Hy3, Kimi, Nex</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="quickstart">
+            <div class="container">
+                <h2>Arsitektur: MarkZero di Ekosistem</h2>
+                <pre><code>MainTenis  (The Actor)    — Bootstrapper
+MarkZero   (The DNA)      — Agent IR, representasi data murni
+iMZHAO     (The Muscle)   — Operasional, eksekusi aksi agen
+SLOP       (The Eyes)     — App-level perception
+CLAI       (The Hands)    — Pipeline architecture</code></pre>
+                <p style="margin-top:1rem;">
+                    MarkZero adalah layer data di dalam arsitektur Maintenis.
+                    Bukan protocol, bukan tool — tapi <strong>representasi data murni</strong> yang dipakai oleh semua komponen lain.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="links">
+                <a href="/docs">Docs Home</a>
+                <a href="/docs/markzero">MarkZero</a>
+                <a href="/docs/adn">ADN</a>
+                <a href="/docs/imzhao">iMZHAO</a>
+                <a href="/docs/clai">CLAI</a>
+                <a href="https://github.com/yus-ham/maintenis">GitHub</a>
+                <a href="https://npmjs.com/~ucing">npm</a>
+            </div>
+            <p>&copy; 2026 Maintenis</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bahasa Sapdain — AI-Native Language</title>
+    <meta name="description" content="Bahasa Sapdain: bahasa pemrograman AI-native berbasis Indonesia + Sunda + AI. Dengan integrasi ADN-Sapdain encoder untuk Agent IR.">
+    <meta name="keywords" content="Sapdain, bahasa pemrograman Indonesia, AI-native, Sunda, ADN, Agent IR, compiler">
+    <link rel="stylesheet" href="../assets/style.css">
+    <link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="/" class="logo">
+                <img src="../assets/logo.svg" alt="Maintenis" width="32" height="32">
+                <span>Maintenis</span>
+            </a>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/docs">Docs</a>
+                <a href="/blog">Blog</a>
+                <a href="https://github.com/yus-ham/bahasa-sapdain">GitHub</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Bahasa Sapdain</h1>
+                <p class="subtitle">Bahasa Pemrograman AI-Native</p>
+                <p class="description">
+                    Bahasa pemrograman berbasis Indonesia + Sunda yang dirancang dari awal untuk AI agents.
+                    <strong>Bukan sekadar translasi &mdash; Sapdain punya Agent IR layer.</strong>
+                </p>
+                <div class="cta">
+                    <a href="https://github.com/yus-ham/bahasa-sapdain" class="btn btn-primary">GitHub</a>
+                    <a href="https://dokumen-sapdain.pages.dev/" class="btn btn-secondary">Spesifikasi</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2>Apa itu Sapdain?</h2>
+                <p style="color: var(--muted); margin-bottom: 2rem;">
+                    Bahasa Sapdain adalah bahasa pemrograman yang lahir dari ekosistem Maintenis (Mei 2026).
+                    Dirancang bukan hanya untuk manusia, tapi juga untuk AI &mdash; dengan fitur linguistik
+                    Indonesia dan Sunda yang membuatnya mudah dipahami sekaligus efisien untuk diproses oleh model bahasa.
+                </p>
+                <div class="feature-grid">
+                    <div class="feature">
+                        <h3>AI-Native</h3>
+                        <p>Dirancang dari awal untuk AI. Fitur <code>ber</code>/<code>nya</code> linguistik membantu LLM memahami konteks tanpa prompt tambahan.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Indonesia + Sunda</h3>
+                        <p>Menggabungkan sintaksis bahasa Indonesia dan struktur bahasa Sunda. Bukan terjemahan &mdash; ini bahasa baru.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Agent IR Integration</h3>
+                        <p>Punya layer ADN-Sapdain yang bisa encode output ke MarkZero format &mdash; Agent IR yang dioptimalkan untuk token efficiency.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Compiler Zig</h3>
+                        <p>Compiler ditulis dalam Zig untuk performa tinggi. Saat ini masih dalam tahap draft/development.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2>Mengapa AI-Native?</h2>
+                <p style="color: var(--muted); margin-bottom: 2rem;">
+                    Bahasa pemrograman lokal sudah ada sebelum Sapdain &mdash; Naskah, BAIK, Jaksel, Sundalang, dan lainnya.
+                    Tapi Sapdain lahir dengan 2 perbedaan fundamental:
+                </p>
+                <div class="feature-grid">
+                    <div class="feature">
+                        <h3>1. AI-Native dari Awal</h3>
+                        <p>Sapdain dirancang untuk AI sejak hari pertama, bukan sebagai bahasa manusia yang kemudian diadaptasi untuk AI. Fitur linguistik <code>ber</code>/<code>nya</code> dan integrasi dengan ADN encoder menjadikannya unik.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>2. Agent IR Layer</h3>
+                        <p>Sapdain punya encoder ADN-Sapdain yang bisa mengubah output program menjadi MarkZero format &mdash; data format yang 26-71% lebih efisien dari JSON untuk AI. Ini tidak dimiliki bahasa lokal lainnya.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2>Perbandingan Bahasa Pemrograman Lokal</h2>
+                <p style="color: var(--muted); margin-bottom: 2rem;">
+                    Ekosistem bahasa pemrograman Indonesia dan Sunda sudah ada sejak 2018. Berikut perbandingan lengkapnya:
+                </p>
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid var(--border);">
+                                <th style="text-align: left; padding: 0.75rem; color: var(--accent);">Bahasa</th>
+                                <th style="text-align: left; padding: 0.75rem; color: var(--accent);">Tahun</th>
+                                <th style="text-align: left; padding: 0.75rem; color: var(--accent);">Target</th>
+                                <th style="text-align: left; padding: 0.75rem; color: var(--accent);">Teknologi</th>
+                                <th style="text-align: left; padding: 0.75rem; color: var(--accent);">Status</th>
+                                <th style="text-align: left; padding: 0.75rem; color: var(--accent);">AI-Native</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <td style="padding: 0.75rem;"><a href="https://github.com/pveyes/naskah" style="color: var(--accent); text-decoration: none;">Naskah</a></td>
+                                <td style="padding: 0.75rem; color: var(--muted);">2018</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">Indonesia</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">Rust &rarr; JS</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">Aktif</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">&mdash;</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <td style="padding: 0.75rem;"><a href="https://github.com/baik-lang/baik" style="color: var(--accent); text-decoration: none;">BAIK</a></td>
+                                <td style="padding: 0.75rem; color: var(--muted);">2019</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">Indonesia (Anak)</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">C, scripting</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">Aktif (14 stars)</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">&mdash;</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <td style="padding: 0.75rem;"><a href="https://github.com/randspace0/sunda-lang" style="color: var(--accent); text-decoration: none;">Sunda Lang</a></td>
+                                <td style="padding: 0.75rem; color: var(--muted);">2020</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">Sunda</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">&mdash;</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">Archived</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">&mdash;</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <td style="padding: 0.75rem;"><a href="https://github.com/RioChndr/jaksel-language" style="color: var(--accent); text-decoration: none;">Jaksel Language</a></td>
+                                <td style="padding: 0.75rem; color: var(--muted);">2022</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">Indonesia (Jaksel slang)</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">JavaScript</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">Archived (948 stars)</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">&mdash;</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <td style="padding: 0.75rem;"><a href="https://github.com/aldiipratama/sunda-language" style="color: var(--accent); text-decoration: none;">Sunda Language</a></td>
+                                <td style="padding: 0.75rem; color: var(--muted);">2022</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">Sunda (fork Jaksel)</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">npm</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">Aktif</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">&mdash;</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <td style="padding: 0.75rem;"><a href="https://github.com/febrd/sundalang" style="color: var(--accent); text-decoration: none;">Sundalang</a></td>
+                                <td style="padding: 0.75rem; color: var(--muted);">2024</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">Sunda (Elixir DSL)</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">Elixir</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">Aktif</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">&mdash;</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <td style="padding: 0.75rem;"><a href="https://github.com/Elang-elang/IndonesianScript" style="color: var(--accent); text-decoration: none;">IndonesianScript</a></td>
+                                <td style="padding: 0.75rem; color: var(--muted);">2025</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">Indonesia (TS transpile)</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">TypeScript</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">Aktif</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">&mdash;</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <td style="padding: 0.75rem;"><a href="https://marketplace.visualstudio.com/items?itemName=bromanprjkt.sundalang-vscode-extension" style="color: var(--accent); text-decoration: none;">SundaLang VSCode</a></td>
+                                <td style="padding: 0.75rem; color: var(--muted);">2025</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">Sunda Pandeglang</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">VSCode ext</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">Aktif (34 installs)</td>
+                                <td style="padding: 0.75rem; color: var(--muted);">&mdash;</td>
+                            </tr>
+                            <tr style="border-bottom: 2px solid var(--accent);">
+                                <td style="padding: 0.75rem; font-weight: 700;"><a href="https://github.com/yus-ham/bahasa-sapdain" style="color: var(--accent); text-decoration: none;">Bahasa Sapdain</a></td>
+                                <td style="padding: 0.75rem; font-weight: 700;">2026</td>
+                                <td style="padding: 0.75rem; font-weight: 700;">Indonesia + Sunda + AI</td>
+                                <td style="padding: 0.75rem; font-weight: 700;">Zig (compiler)</td>
+                                <td style="padding: 0.75rem; font-weight: 700;">Draft</td>
+                                <td style="padding: 0.75rem; font-weight: 700; color: var(--accent);">&#10003; Ya</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2>ADN-Sapdain Encoder</h2>
+                <p style="color: var(--muted); margin-bottom: 2rem;">
+                    Integrasi dengan ADN (Agent Data Notation) memungkinkan output program Sapdain langsung
+                    di-encode ke format MarkZero &mdash; Agent IR yang dioptimalkan untuk token efficiency.
+                </p>
+                <div class="feature-grid">
+                    <div class="feature">
+                        <h3>ADN Encoder</h3>
+                        <p>Sapdain punya encoder khusus yang menghubungkan bahasa dengan data layer. Output program bisa langsung menjadi structured data untuk AI.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>MarkZero Output</h3>
+                        <p>Encoder menghasilkan MarkZero format &mdash; 26-71% lebih efisien dari JSON di 9 model LLM yang sudah diuji secara live.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>1-Token Markers</h3>
+                        <p>MarkZero menggunakan marker yang masing-masing hanya 1 token di semua model. Validated empirically di MiMo, DeepSeek, Grok, GLM, Qwen, dan lainnya.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>CLAI Pipeline</h3>
+                        <p>Output encoder bisa langsung masuk ke CLAI pipeline: <code>transport(input) &rarr; entity &rarr; filter &rarr; transport(output)</code></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="quickstart">
+            <div class="container">
+                <h2>AI-Native Languages Global</h2>
+                <p style="color: var(--muted); margin-bottom: 2rem;">Bahasa Sapdain bersanding dengan Zerolang (Vercel) sebagai bahasa pemrograman AI-native di dunia.</p>
+                <div class="feature-grid">
+                    <div class="feature">
+                        <h3>Zerolang</h3>
+                        <p>Dari Vercel (2026). Bahasa AI-native pertama yang mendapat perhatian luas, memicu pivot Sapdain ke arah AI-native.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Bahasa Sapdain</h3>
+                        <p>Dari Maintenis (2026). Satu-satunya bahasa AI-native yang menggabungkan bahasa lokal (Indonesia + Sunda) dengan Agent IR integration.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="quickstart">
+            <div class="container">
+                <h2>Status Saat Ini</h2>
+                <pre><code>Spesifikasi Sapdain  : ✅ Lengkap
+Compiler (Zig)       : ⚠️ Draft — belum selesai
+ADN-Sapdain Encoder  : ❌ Kosong (.ts kosong, hanya `}`)
+Dokumen              : ✅ https://dokumen-sapdain.pages.dev/</code></pre>
+                <p style="color: var(--muted); margin-top: 1rem; font-size: 0.9rem;">
+                    Sapdain adalah bahasa AI-native + Agent IR integration yang belum dimiliki bahasa lain,
+                    tapi compiler dan encoder masih dalam tahap development. Kontribusi diterima.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="links">
+                <a href="/docs">Docs Home</a>
+                <a href="/docs/sapdain.html">Bahasa Sapdain</a>
+                <a href="https://github.com/yus-ham/bahasa-sapdain">GitHub</a>
+                <a href="https://dokumen-sapdain.pages.dev/">Spesifikasi</a>
+                <a href="https://npmjs.com/~ucing">npm</a>
+            </div>
+            <p>&copy; 2026 Maintenis</p>
+        </div>
+    </footer>
+</body>
+</html>
